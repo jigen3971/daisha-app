@@ -37,6 +37,10 @@ rentButton.addEventListener("click", () => {
 
 returnButton.addEventListener("click", () => {
 
+  returnButton.disabled = true;
+  returnButton.innerHTML = "返却処理済み";
+  returnButton.style.background = "gray";
+
   const distanceInputs = document.querySelectorAll('input[placeholder="km"]');
 
   const data = {
