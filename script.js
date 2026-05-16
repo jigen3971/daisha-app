@@ -36,6 +36,21 @@ rentButton.addEventListener("click", () => {
 });
 
 returnButton.addEventListener("click", () => {
+    rentButton.addEventListener("click", () => {
+
+  if (
+    !document.querySelector('input[placeholder="氏名"]').value ||
+    !document.querySelector('input[placeholder="TEL"]').value ||
+    !document.querySelector('input[placeholder="預かり車 車種"]').value ||
+    !document.querySelector('input[placeholder="預かり車 ナンバー"]').value ||
+    !document.getElementById("staff").value ||
+    !document.getElementById("sign").value
+  ){
+    alert("必須項目を入力してください");
+    return;
+  }
+
+  const data = {
 
   if (returnButton.dataset.done === "true") {
     return;

@@ -38,14 +38,14 @@
 
   <h2>お客様情報</h2>
 
-  <input type="text" placeholder="氏名" autocomplete="off">
-  <input type="tel" placeholder="TEL" autocomplete="off">
+  <input type="text" placeholder="氏名" autocomplete="off" required>
+  <input type="tel" placeholder="TEL" autocomplete="off" required>
   <input type="text" placeholder="住所" autocomplete="off">
 
   <h2>お預かり車</h2>
 
-  <input type="text" placeholder="預かり車 車種" autocomplete="off">
-  <input type="text" placeholder="預かり車 ナンバー" autocomplete="off">
+  <input type="text" placeholder="預かり車 車種" autocomplete="off" required>
+  <input type="text" placeholder="預かり車 ナンバー" autocomplete="off" required>
 
   <label>お預かり車の写真</label>
   <input type="file" accept="image/*" capture="environment">
@@ -97,7 +97,7 @@
 <div class="check"><input type="checkbox"><label>【12】損傷・汚損<br>返却時の新たな傷・汚れは修理費および損料金を請求します。</label></div>
 
   <h2>貸出担当者</h2>
-  <select id="staff">
+  <select id="staff" required>
   <option value="">担当者を選択してください</option>
   <option>社長</option>
   <option>トラ</option>
@@ -105,7 +105,7 @@
   <option>お届け</option>
 </select>
 <h2>署名</h2>
-  <input type="text" id="sign" placeholder="署名" autocomplete="off">
+  <input type="text" id="sign" placeholder="署名" autocomplete="off" required>
 
   <button class="rent-btn">貸出確認完了</button>
 
