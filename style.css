@@ -110,3 +110,8 @@ hr{
   font-weight:bold;
   margin-top:20px;
 }
+input[type="datetime-local"]{
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
