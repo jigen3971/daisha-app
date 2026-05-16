@@ -22,11 +22,10 @@ rentButton.addEventListener("click", () => {
     returnCheck: ""
   };
 
-  fetch("https://script.google.com/macros/s/AKfycbxAE7CZbHKhe02W2WTQF4NQxtNsL7w8yr6rb2t7ueyLtRoXbiSoYJRDxCZLweaoTrHc/exec", {
+fetch("https://script.google.com/macros/s/AKfycbxAE7CZbHKhe02W2WTQF4NQxtNsL7w8yr6rb2t7ueyLtRoXbiSoYJRDxCZLweaoTrHc/exec", {
   method: "POST",
   body: new URLSearchParams(data)
 });
-
   message.innerHTML = "貸出確認をスプレッドシートへ保存しました";
   message.style.color = "green";
 
