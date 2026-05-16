@@ -1,29 +1,33 @@
-const button = document.querySelector("button");
+const rentButton = document.querySelector(".rent-btn");
 
-button.addEventListener("click", () => {
+rentButton.addEventListener("click", () => {
 
-  const checks = document.querySelectorAll('input[type="checkbox"]');
+  const message = document.getElementById("message");
 
-  let allChecked = true;
+  const data = {
+    name: document.querySelector('input[placeholder="氏名"]').value,
+    tel: document.querySelector('input[placeholder="TEL"]').value,
+    address: document.querySelector('input[placeholder="住所"]').value,
+    car: document.querySelector('input[placeholder="車種"]').value,
+    number: document.querySelector('input[placeholder="ナンバー"]').value,
+    color: document.querySelector('input[placeholder="色"]').value,
+    reason: document.querySelector("select").value,
+    start: document.querySelectorAll('input[type="datetime-local"]')[0].value,
+    returnDate: document.querySelectorAll('input[type="datetime-local"]')[1].value,
+    distance: document.querySelector('input[placeholder="km"]').value,
+    staff: document.getElementById("staff").value,
+    sign: document.getElementById("sign").value,
+    returnDistance: "",
+    rentCheck: "貸出確認完了",
+    returnCheck: ""
+  };
 
-  checks.forEach((check) => {
-    if (!check.checked) {
-      allChecked = false;
-    }
+  fetch("https://script.google.com/macros/s/AKfycbxAE7CZbHKhe02W2WTQF4NQxtNsL7w8yr6rb2t7ueyLtRoXbiSoYJRDxCZLweaoTrHc/exec", {
+    method: "POST",
+    body: JSON.stringify(data)
   });
 
-  let message = document.getElementById("message");
-
-  if (!allChecked) {
-
-    message.innerHTML = "※ 確認事項をすべてチェックしてください";
-    message.style.color = "red";
-
-    return;
-  }
-
-  message.innerHTML = "代車貸出確認を受付しました";
+  message.innerHTML = "貸出確認をスプレッドシートへ保存しました";
   message.style.color = "green";
-  });
 
-fetch("https://script.google.com/macros/s/AKfycbxAE7CZbHKhe02W2WTQF4NQxtNsL7w8yr6rb2t7ueyLtRoXbiSoYJRDXCZLweaoTrHc/exec")　
+});
