@@ -63,3 +63,38 @@ button{
 button:hover{
   background:#005fa3;
 }
+.return-title{
+    font-size: 32px;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    color: #d32f2f;
+}
+.rent-btn{
+    background: #1976d2;
+}
+
+.return-btn{
+    background: #d32f2f;
+    margin-top: 20px;
+}
+.rent-btn{
+    width: 100%;
+    padding: 18px;
+    background: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.return-btn{
+    width: 100%;
+    padding: 18px;
+    background: #d32f2f;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+    margin-top: 30px;
+}
