@@ -7,14 +7,16 @@ const message = document.getElementById("message");
 rentButton.addEventListener("click", () => {
 
   if (
-    !document.querySelector('input[placeholder="氏名"]').value ||
-    !document.querySelector('input[placeholder="TEL"]').value ||
-    !document.querySelector('input[placeholder="預かり車 車種"]').value ||
-    !document.querySelector('input[placeholder="預かり車 ナンバー"]').value ||
+    !document.getElementById("rentalCar").value ||
+    !document.querySelector('input[placeholder="氏名 ※必須"]').value ||
+    !document.querySelector('input[placeholder="TEL ※必須"]').value ||
+    !document.querySelector('input[placeholder="預かり車 車種 ※必須"]').value ||
+    !document.querySelector('input[placeholder="預かり車 ナンバー ※必須"]').value ||
     !document.getElementById("staff").value ||
     !document.getElementById("sign").value
   ){
-    alert("必須項目を入力してください");
+    message.innerHTML = "※ 必須項目を入力してください";
+    message.style.color = "red";
     return;
   }
 
@@ -22,18 +24,19 @@ rentButton.addEventListener("click", () => {
 
   for (let check of checks) {
     if (!check.checked) {
-      alert("確認事項をすべてチェックしてください");
+      message.innerHTML = "※ 確認事項をすべてチェックしてください";
+      message.style.color = "red";
       return;
     }
   }
 
   const data = {
     rentalCar: document.getElementById("rentalCar").value,
-    name: document.querySelector('input[placeholder="氏名"]').value,
-    tel: document.querySelector('input[placeholder="TEL"]').value,
+    name: document.querySelector('input[placeholder="氏名 ※必須"]').value,
+    tel: document.querySelector('input[placeholder="TEL ※必須"]').value,
     address: document.querySelector('input[placeholder="住所"]').value,
-    customerCar: document.querySelector('input[placeholder="預かり車 車種"]').value,
-    customerNumber: document.querySelector('input[placeholder="預かり車 ナンバー"]').value,
+    customerCar: document.querySelector('input[placeholder="預かり車 車種 ※必須"]').value,
+    customerNumber: document.querySelector('input[placeholder="預かり車 ナンバー ※必須"]').value,
     reason: document.getElementById("reason").value,
     start: document.querySelectorAll('input[type="datetime-local"]')[0].value,
     returnDate: document.querySelectorAll('input[type="datetime-local"]')[1].value,
@@ -76,11 +79,11 @@ returnButton.addEventListener("click", () => {
 
   const data = {
     rentalCar: document.getElementById("rentalCar").value,
-    name: document.querySelector('input[placeholder="氏名"]').value,
-    tel: document.querySelector('input[placeholder="TEL"]').value,
+    name: document.querySelector('input[placeholder="氏名 ※必須"]').value,
+    tel: document.querySelector('input[placeholder="TEL ※必須"]').value,
     address: document.querySelector('input[placeholder="住所"]').value,
-    customerCar: document.querySelector('input[placeholder="預かり車 車種"]').value,
-    customerNumber: document.querySelector('input[placeholder="預かり車 ナンバー"]').value,
+    customerCar: document.querySelector('input[placeholder="預かり車 車種 ※必須"]').value,
+    customerNumber: document.querySelector('input[placeholder="預かり車 ナンバー ※必須"]').value,
     reason: document.getElementById("reason").value,
     start: "",
     returnDate: "",
