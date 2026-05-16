@@ -37,15 +37,19 @@ rentButton.addEventListener("click", () => {
 
 returnButton.addEventListener("click", () => {
 
-  if(returnButton.disabled){
+  if (returnButton.dataset.done === "true") {
     return;
   }
 
+  returnButton.dataset.done = "true";
   returnButton.disabled = true;
+  returnButton.style.pointerEvents = "none";
   returnButton.innerHTML = "返却処理済み";
   returnButton.classList.add("done");
+  returnButton.style.backgroundColor = "gray";
+
   message.innerHTML = "返却処理中です。もう一度押さないでください。";
-message.style.color = "orange";
+  message.style.color = "orange";
 
   const distanceInputs = document.querySelectorAll('input[placeholder="km"]');
 
