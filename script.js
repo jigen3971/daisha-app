@@ -85,38 +85,46 @@ rentButton.addEventListener("click", () => {
     returnCheck: ""
   };
 
-  const photoInput = document.getElementById("carPhoto");
-const file = photoInput.files[0];
+const photoInput = document.getElementById("carPhoto");
+  const file = photoInput.files[0];
 
-if (file) {
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    data.photo = e.target.result.split(",")[1];
+  function sendRentData(data) {
+    fetch(gasUrl, {
+      method: "POST",
+      body: new URLSearchParams(data)
+    }).then(() => {
+      message.innerHTML = "貸出情報をスプレッドシートへ保存しました";
+      message.style.color = "green";
+    }).catch(() => {
+      message.innerHTML = "送信に失敗しました。再度お試しください。";
+      message.style.color = "red";
+      rentButton.dataset.done = "";
+      rentButton.disabled = false;
+      rentButton.style.pointerEvents = "";
+      rentButton.innerHTML = "貸出";
+      rentButton.style.backgroundColor = "";
+    });
+  }
+
+  if (file) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement("canvas");
+      const maxWidth = 800;
+      const scale = Math.min(1, maxWidth / img.width);
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      data.photo = canvas.toDataURL("image/jpeg", 0.7).split(",")[1];
+      sendRentData(data);
+    };
+    img.src = URL.createObjectURL(file);
+  } else {
     sendRentData(data);
-  };
-  reader.readAsDataURL(file);
-} else {
-  sendRentData(data);
-}
+  }
 
-function sendRentData(data) {
-  fetch(gasUrl, {
-    method: "POST",
-    body: new URLSearchParams(data)
-  }).then(() => {
-    message.innerHTML = "貸出情報をスプレッドシートへ保存しました";
-    message.style.color = "green";
-  }).catch(() => {
-    message.innerHTML = "送信に失敗しました。再度お試しください。";
-    message.style.color = "red";
-    rentButton.dataset.done = "";
-    rentButton.disabled = false;
-    rentButton.style.pointerEvents = "";
-    rentButton.innerHTML = "貸出";
-    rentButton.style.backgroundColor = "";
-  });
-});
-
+}); // rentButton.addEventListener の閉じ括弧
 // --- 返却ボタンの処理 ---
 returnButton.addEventListener("click", () => {
 
