@@ -8,11 +8,11 @@ const message = document.getElementById("message");
 // 「代車1 ミライース...」から「代車1」だけを抜き出す機能
 function getShortCarName(fullName) {
   if (!fullName) return "";
-  const match = fullName.match(/^([^\s（(]+)/);
+  const match = fullName.match(/^([^\s (［[]+)/);
   return match ? match[1] : fullName;
 }
 
-// --- 貸出ボタンの処理 ---
+// ---- 貸出ボタンの処理 ----
 rentButton.addEventListener("click", () => {
 
   // 「貸出時走行距離」の入力欄を確実に特定して値を取得
@@ -48,13 +48,13 @@ rentButton.addEventListener("click", () => {
 
   // 2. 貸出時のチェックボックス確認（上の12個）
   const checks = document.querySelectorAll('.check input[type="checkbox"]');
-  for (let i = 0; i < 12; i++)
+  for (let i = 0; i < 12; i++) {
     if (checks[i] && !checks[i].checked) {
       message.innerHTML = "※ 確認事項をすべてチェックしてください";
       message.style.color = "red";
       return;
     }
-
+  }
 
   if (rentButton.dataset.done === "true") return;
 
@@ -85,8 +85,8 @@ rentButton.addEventListener("click", () => {
     returnCheck: ""
   };
 
-const photoInput = document.getElementById("carPhoto");
-  const file = photoInput.files[0];
+  const photoInput = document.getElementById("carPhoto");
+  const file = photoInput ? photoInput.files[0] : null;
 
   function sendRentData(data) {
     fetch(gasUrl, {
@@ -125,7 +125,8 @@ const photoInput = document.getElementById("carPhoto");
   }
 
 }); // rentButton.addEventListener の閉じ括弧
-// --- 返却ボタンの処理 ---
+
+// ---- 返却ボタンの処理 ----
 returnButton.addEventListener("click", () => {
 
   // 「返却時走行距離」の入力欄を確実に特定して値を取得
@@ -155,15 +156,14 @@ returnButton.addEventListener("click", () => {
     return;
   }
 
-  // ★【修正：追加】返却時確認のチェックボックス（下側の6個）の全チェック検証
+  // 返却時確認のチェックボックス（下側の6個）の全チェック検証
   const allChecks = document.querySelectorAll('input[type="checkbox"]');
-  // 下側の6個（全チェックボックスのうち、後ろから6個分）をループで確認します
   const startIndex = allChecks.length - 6;
   for (let i = startIndex; i < allChecks.length; i++) {
     if (allChecks[i] && !allChecks[i].checked) {
       message.innerHTML = "※ 返却時確認の項目（燃料・車内汚れ等）をすべてチェックしてください";
       message.style.color = "red";
-      return; // チェックが漏れているのでここで処理を強制ストップ
+      return;
     }
   }
 
@@ -197,18 +197,19 @@ returnButton.addEventListener("click", () => {
   };
 
   fetch(gasUrl, {
-  method: "POST",
-  body: new URLSearchParams(data)
-}).then(() => {
-  message.innerHTML = "返却情報をスプレッドシートへ保存しました";
-  message.style.color = "green";
-}).catch(() => {
-  message.innerHTML = "送信に失敗しました。再度お試しください。";
-  message.style.color = "red";
-  returnButton.dataset.done = "";
-  returnButton.disabled = false;
-  returnButton.style.pointerEvents = "";
-  returnButton.innerHTML = "返却";
-  returnButton.style.backgroundColor = "";
-});
-});
+    method: "POST",
+    body: new URLSearchParams(data)
+  }).then(() => {
+    message.innerHTML = "返却情報をスプレッドシートへ保存しました";
+    message.style.color = "green";
+  }).catch(() => {
+    message.innerHTML = "送信に失敗しました。再度お試しください。";
+    message.style.color = "red";
+    returnButton.dataset.done = "";
+    returnButton.disabled = false;
+    returnButton.style.pointerEvents = "";
+    returnButton.innerHTML = "返却";
+    returnButton.style.backgroundColor = "";
+  });
+
+}); // returnButton.addEventListener の閉じ括弧
