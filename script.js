@@ -7,6 +7,7 @@ const message = document.getElementById("message");
 // --- 貸出ボタンの処理 ---
 rentButton.addEventListener("click", () => {
 
+  // 貸出時の必須入力チェック
   if (
     !document.getElementById("rentalCar").value ||
     !document.querySelector('input[placeholder="氏名 ※必須"]').value ||
@@ -21,8 +22,8 @@ rentButton.addEventListener("click", () => {
     return;
   }
 
+  // 貸出時のみチェックボックスを確認する
   const checks = document.querySelectorAll('.check input[type="checkbox"]');
-
   for (let check of checks) {
     if (!check.checked) {
       message.innerHTML = "※ 確認事項をすべてチェックしてください";
@@ -63,14 +64,14 @@ rentButton.addEventListener("click", () => {
 // --- 返却ボタンの処理 ---
 returnButton.addEventListener("click", () => {
 
-  // 1. 返却時の必須入力チェック
+  // 1. 返却時の必須入力チェック（返却に必要な項目だけを厳選してチェック）
   const distanceInputs = document.querySelectorAll('input[placeholder="km"]');
   const returnDistanceVal = distanceInputs[1] ? distanceInputs[1].value : "";
 
   if (
     !document.getElementById("rentalCar").value ||
     !document.querySelector('input[placeholder="氏名 ※必須"]').value ||
-    !returnDistanceVal || 
+    !returnDistanceVal || // 返却時の走行距離(km)
     !document.getElementById("staff").value ||
     !document.getElementById("sign").value
   ){
@@ -79,17 +80,10 @@ returnButton.addEventListener("click", () => {
     return; 
   }
 
-  // 2. 返却時のチェックボックス確認（構文エラーを修正）
-  const checks = document.querySelectorAll('.check input[type="checkbox"]');
-  for (let check of checks) {
-    if (!check.checked) {
-      message.innerHTML = "※ 確認事項をすべてチェックしてください";
-      message.style.color = "red";
-      return; // 未チェックのものがある場合のみ、ここで処理を中断します
-    }
-  }
+  // ★【修正点】返却時はチェックボックスの判定（ループ処理）を完全に削除しました。
+  // これにより、返却時に「確認事項をすべてチェックしてください」のエラーが出ることは絶対にありません。
 
-  // 3. 重複保存防止ガード（すべて入力・チェック済みの時だけここに進む）
+  // 2. 重複保存防止ガード（すべて入力されている場合のみ即座にロック）
   if (returnButton.dataset.done === "true") {
     return;
   }
