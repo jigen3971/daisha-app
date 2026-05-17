@@ -63,32 +63,33 @@ rentButton.addEventListener("click", () => {
 // --- 返却ボタンの処理 ---
 returnButton.addEventListener("click", () => {
 
-  // 【修正点1】返却時の必須入力チェック（未入力があればここで処理を中断）
+  // 1. 返却時の必須入力チェック
   const distanceInputs = document.querySelectorAll('input[placeholder="km"]');
   const returnDistanceVal = distanceInputs[1] ? distanceInputs[1].value : "";
 
   if (
     !document.getElementById("rentalCar").value ||
     !document.querySelector('input[placeholder="氏名 ※必須"]').value ||
-    !returnDistanceVal || // 返却時のkm
+    !returnDistanceVal || 
     !document.getElementById("staff").value ||
     !document.getElementById("sign").value
   ){
     message.innerHTML = "※ 返却に必要な必須項目（氏名・返却km・スタッフ・サイン等）を入力してください";
     message.style.color = "red";
-    return; // 条件を満たさないため、送信もボタン無効化もせずここで終了
+    return; // ここで完全に処理をストップさせます
   }
 
-  // 【修正点2】返却時のチェックボックス確認（チェック漏れがあればここで処理を中断）
+  // 2. 返却時のチェックボックス確認
   const checks = document.querySelectorAll('.check input[type="checkbox"]');
   for (let check of checks) {
     if (!check.checked) {
       message.innerHTML = "※ 確認事項をすべてチェックしてください";
       message.style.color = "red";
-      return; // チェック漏れがあるため、送信もボタン無効化もせずここで終了
+      return; // ここで完全に処理をストップさせます
+    }
   }
 
-  // 【修正点3】すべての必須項目・チェックが正常な場合のみ、重複保存防止ロックを実行して送信
+  // 3. 重複保存防止ガード（すべて正常に入力されている場合のみここに進む）
   if (returnButton.dataset.done === "true") {
     return;
   }
