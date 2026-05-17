@@ -137,3 +137,20 @@ input[type="datetime-local"]{
   appearance:none;
   -webkit-appearance:none;
 }
+#message {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  padding: 12px;
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.95); /* 背景を白にして文字を見やすく */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 少し影をつけて浮き立たせる */
+  z-index: 9999; /* 他の要素より一番手前に表示 */
+}
+
+/* 警告が出た時に画面の最上部が隠れないように、ボディのトップに余白を作ると綺麗です */
+body {
+  padding-top: 50px;
+}
