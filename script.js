@@ -4,6 +4,7 @@ const rentButton = document.querySelector(".rent-btn");
 const returnButton = document.querySelector(".return-btn");
 const message = document.getElementById("message");
 
+// --- 貸出ボタンの処理 ---
 rentButton.addEventListener("click", () => {
 
   if (
@@ -59,8 +60,35 @@ rentButton.addEventListener("click", () => {
 
 });
 
+// --- 返却ボタンの処理 ---
 returnButton.addEventListener("click", () => {
 
+  // 【修正点1】返却時の必須入力チェック（未入力があればここで処理を中断）
+  const distanceInputs = document.querySelectorAll('input[placeholder="km"]');
+  const returnDistanceVal = distanceInputs[1] ? distanceInputs[1].value : "";
+
+  if (
+    !document.getElementById("rentalCar").value ||
+    !document.querySelector('input[placeholder="氏名 ※必須"]').value ||
+    !returnDistanceVal || // 返却時のkm
+    !document.getElementById("staff").value ||
+    !document.getElementById("sign").value
+  ){
+    message.innerHTML = "※ 返却に必要な必須項目（氏名・返却km・スタッフ・サイン等）を入力してください";
+    message.style.color = "red";
+    return; // 条件を満たさないため、送信もボタン無効化もせずここで終了
+  }
+
+  // 【修正点2】返却時のチェックボックス確認（チェック漏れがあればここで処理を中断）
+  const checks = document.querySelectorAll('.check input[type="checkbox"]');
+  for (let check of checks) {
+    if (!check.checked) {
+      message.innerHTML = "※ 確認事項をすべてチェックしてください";
+      message.style.color = "red";
+      return; // チェック漏れがあるため、送信もボタン無効化もせずここで終了
+  }
+
+  // 【修正点3】すべての必須項目・チェックが正常な場合のみ、重複保存防止ロックを実行して送信
   if (returnButton.dataset.done === "true") {
     return;
   }
@@ -75,8 +103,6 @@ returnButton.addEventListener("click", () => {
   message.innerHTML = "返却処理中です。もう一度押さないでください。";
   message.style.color = "orange";
 
-  const distanceInputs = document.querySelectorAll('input[placeholder="km"]');
-
   const data = {
     rentalCar: document.getElementById("rentalCar").value,
     name: document.querySelector('input[placeholder="氏名 ※必須"]').value,
@@ -90,7 +116,7 @@ returnButton.addEventListener("click", () => {
     distance: "",
     staff: document.getElementById("staff").value,
     sign: document.getElementById("sign").value,
-    returnDistance: distanceInputs[1].value,
+    returnDistance: returnDistanceVal,
     status: "返却済み",
     rentCheck: "",
     returnCheck: "返却確認完了"
