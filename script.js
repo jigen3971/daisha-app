@@ -7,7 +7,6 @@ const message = document.getElementById("message");
 // --- 貸出ボタンの処理 ---
 rentButton.addEventListener("click", () => {
 
-  // 1. 貸出時の必須入力チェック
   if (
     !document.getElementById("rentalCar").value ||
     !document.querySelector('input[placeholder="氏名 ※必須"]').value ||
@@ -22,14 +21,8 @@ rentButton.addEventListener("click", () => {
     return;
   }
 
-  // ★【最重要の修正】
-  // 下の「返却時確認」を無視して、上の「確認事項【1】〜【12】」のチェックボックスだけを狙い撃ちで判定します。
-  // HTML構造上の「確認事項」エリア（h2の次のブロック等）にあるチェックボックスのみを取得
-  const checkSection = document.querySelector('h2:nth-of-type(4)').nextElementSibling; 
-  // もし上記でうまくいかない場合の安全策として、「画面内の上から12個のチェックボックス」だけをループ判定します
   const checks = document.querySelectorAll('.check input[type="checkbox"]');
   
-  // 上の12個の確認事項だけをチェック（返却用の下の6個は完全にスルーします）
   for (let i = 0; i < 12; i++) {
     if (checks[i] && !checks[i].checked) {
       message.innerHTML = "※ 確認事項をすべてチェックしてください";
@@ -38,7 +31,6 @@ rentButton.addEventListener("click", () => {
     }
   }
 
-  // 3. 重複保存防止
   if (rentButton.dataset.done === "true") return;
   rentButton.dataset.done = "true";
   rentButton.disabled = true;
@@ -75,27 +67,30 @@ rentButton.addEventListener("click", () => {
 // --- 返却ボタンの処理 ---
 returnButton.addEventListener("click", () => {
 
-  // 1. 返却時の必須入力チェック
+  // 【最重要の変更点】
+  // 画面内のすべての「km」がついた入力欄（input）を取得し、その中から「最後に存在するkm欄」を確実に返却kmとして特定します。
   const distanceInputs = document.querySelectorAll('input[placeholder="km"]');
-  const returnDistanceVal = distanceInputs[1] ? distanceInputs[1].value : "";
+  const returnDistanceVal = distanceInputs.length > 0 ? distanceInputs[distanceInputs.length - 1].value : "";
 
+  // 返却時の必須入力チェック
   if (
     !document.getElementById("rentalCar").value ||
     !document.querySelector('input[placeholder="氏名 ※必須"]').value ||
-    !returnDistanceVal || 
+    !returnDistanceVal || // 特定した返却kmが空欄でないか厳格にチェック
     !document.getElementById("staff").value ||
     !document.getElementById("sign").value
   ){
     message.innerHTML = "※ 返却に必要な必須項目（氏名・返却km・スタッフ・サイン等）を入力してください";
     message.style.color = "red";
-    return; 
+    return; // 入力漏れがあればここで止まり、ボタンは押せる状態を維持します
   }
 
-  // 2. 重複保存防止ガード
+  // 重複保存防止ガード（すべて正常に入力されていれば、ここを通過して即座にロック）
   if (returnButton.dataset.done === "true") {
     return;
   }
 
+  // ボタンを即座にグレーアウト（無効化）して連打を防止します
   returnButton.dataset.done = "true";
   returnButton.disabled = true;
   returnButton.style.pointerEvents = "none";
