@@ -22,10 +22,16 @@ rentButton.addEventListener("click", () => {
     return;
   }
 
-  // 2. 貸出時のチェックボックス確認（厳格にチェックします）
+  // ★【最重要の修正】
+  // 下の「返却時確認」を無視して、上の「確認事項【1】〜【12】」のチェックボックスだけを狙い撃ちで判定します。
+  // HTML構造上の「確認事項」エリア（h2の次のブロック等）にあるチェックボックスのみを取得
+  const checkSection = document.querySelector('h2:nth-of-type(4)').nextElementSibling; 
+  // もし上記でうまくいかない場合の安全策として、「画面内の上から12個のチェックボックス」だけをループ判定します
   const checks = document.querySelectorAll('.check input[type="checkbox"]');
-  for (let check of checks) {
-    if (!check.checked) {
+  
+  // 上の12個の確認事項だけをチェック（返却用の下の6個は完全にスルーします）
+  for (let i = 0; i < 12; i++) {
+    if (checks[i] && !checks[i].checked) {
       message.innerHTML = "※ 確認事項をすべてチェックしてください";
       message.style.color = "red";
       return;
