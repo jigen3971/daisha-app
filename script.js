@@ -15,7 +15,7 @@ function getShortCarName(fullName) {
 // --- 貸出ボタンの処理 ---
 rentButton.addEventListener("click", () => {
 
-  // 【修正】「貸出時走行距離」の入力欄を確実に特定して値を取得します
+  // 「貸出時走行距離」の入力欄を確実に特定して値を取得
   const rentDistanceInput = document.querySelector('input[placeholder*="貸出時"]');
   const rentDistanceVal = rentDistanceInput ? rentDistanceInput.value : "";
 
@@ -46,7 +46,7 @@ rentButton.addEventListener("click", () => {
     return;
   }
 
-  // 2. 貸出時のチェックボックス確認（上の12個だけ）
+  // 2. 貸出時のチェックボックス確認（上の12個）
   const checks = document.querySelectorAll('.check input[type="checkbox"]');
   for (let i = 0; i < 12; i++) {
     if (checks[i] && !checks[i].checked) {
@@ -76,7 +76,7 @@ rentButton.addEventListener("click", () => {
     reason: reasonEl ? reasonEl.value : "",
     start: document.querySelectorAll('input[type="datetime-local"]')[0] ? document.querySelectorAll('input[type="datetime-local"]')[0].value : "",
     returnDate: document.querySelectorAll('input[type="datetime-local"]')[1] ? document.querySelectorAll('input[type="datetime-local"]')[1].value : "",
-    distance: rentDistanceVal, // ここに確実に入ります
+    distance: rentDistanceVal,
     staff: staffEl.value,
     sign: signEl.value,
     returnDistance: "",
@@ -97,7 +97,7 @@ rentButton.addEventListener("click", () => {
 // --- 返却ボタンの処理 ---
 returnButton.addEventListener("click", () => {
 
-  // 【修正】「返却時走行距離」の入力欄を確実に特定して値を取得します
+  // 「返却時走行距離」の入力欄を確実に特定して値を取得
   const returnDistanceInput = document.querySelector('input[placeholder*="返却時"]');
   const returnDistanceVal = returnDistanceInput ? returnDistanceInput.value : "";
 
@@ -124,6 +124,18 @@ returnButton.addEventListener("click", () => {
     return; 
   }
 
+  // ★【修正：追加】返却時確認のチェックボックス（下側の6個）の全チェック検証
+  const allChecks = document.querySelectorAll('input[type="checkbox"]');
+  // 下側の6個（全チェックボックスのうち、後ろから6個分）をループで確認します
+  const startIndex = allChecks.length - 6; 
+  for (let i = startIndex; i < allChecks.length; i++) {
+    if (allChecks[i] && !allChecks[i].checked) {
+      message.innerHTML = "※ 返却時確認の項目（燃料・車内汚れ等）をすべてチェックしてください";
+      message.style.color = "red";
+      return; // チェックが漏れているのでここで処理を強制ストップ
+    }
+  }
+
   if (returnButton.dataset.done === "true") return;
 
   returnButton.dataset.done = "true";
@@ -147,7 +159,7 @@ returnButton.addEventListener("click", () => {
     distance: "",
     staff: staffEl.value,
     sign: signEl.value,
-    returnDistance: returnDistanceVal, // 返却距離
+    returnDistance: returnDistanceVal,
     status: "返却済み",
     rentCheck: "",
     returnCheck: "返却確認完了"
