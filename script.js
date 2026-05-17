@@ -15,11 +15,9 @@ function getShortCarName(fullName) {
 // --- 貸出ボタンの処理 ---
 rentButton.addEventListener("click", () => {
 
-  // 「貸出時走行距離」の入力欄を確実に特定して値を取得
   const rentDistanceInput = document.querySelector('input[placeholder*="貸出時"]');
   const rentDistanceVal = rentDistanceInput ? rentDistanceInput.value : "";
 
-  // 各種入力項目を取得
   const rentalCarEl = document.getElementById("rentalCar") || document.querySelector("select");
   const nameEl = document.querySelector('input[placeholder*="氏名"]');
   const telEl = document.querySelector('input[placeholder*="TEL"]') || document.querySelector('input[placeholder*="電話"]');
@@ -107,13 +105,6 @@ rentButton.addEventListener("click", () => {
   }
 
   if (file) {
-    // 📸【ここに追加：携帯本体への自動保存処理】
-    const dlLink = document.createElement("a");
-    dlLink.href = URL.createObjectURL(file);
-    dlLink.download = `${nameEl.value}様_預かり車.jpg`;
-    dlLink.click();
-
-    // これ以降は既存の「完全にうまくいっている圧縮＆送信処理」をそのまま実行します
     const img = new Image();
     img.onload = function() {
       const canvas = document.createElement("canvas");
@@ -131,12 +122,11 @@ rentButton.addEventListener("click", () => {
     sendRentData(data);
   }
 
-}); // rentButton.addEventListener の閉じ括弧
+});
 
 // --- 返却ボタンの処理 ---
 returnButton.addEventListener("click", () => {
 
-  // 「返却時走行距離」の入力欄を確実に特定して値を取得
   const returnDistanceInput = document.querySelector('input[placeholder*="返却時"]');
   const returnDistanceVal = returnDistanceInput ? returnDistanceInput.value : "";
 
@@ -150,7 +140,6 @@ returnButton.addEventListener("click", () => {
   const staffEl = document.getElementById("staff") || document.querySelectorAll("select")[1];
   const signEl = document.getElementById("sign") || document.querySelector('input[placeholder*="署名"]') || document.querySelector('input[placeholder*="サイン"]');
 
-  // 1. 返却時の必須入力チェック
   if (
     !rentalCarEl || !rentalCarEl.value ||
     !nameEl || !nameEl.value ||
@@ -218,4 +207,4 @@ returnButton.addEventListener("click", () => {
     returnButton.innerHTML = "返却";
     returnButton.style.backgroundColor = "";
   });
-}); // returnButton.addEventListener の閉じ括弧
+});
