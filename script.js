@@ -7,7 +7,7 @@ const message = document.getElementById("message");
 // --- 貸出ボタンの処理 ---
 rentButton.addEventListener("click", () => {
 
-  // 貸出時の必須入力チェック
+  // 1. 貸出時の必須入力チェック
   if (
     !document.getElementById("rentalCar").value ||
     !document.querySelector('input[placeholder="氏名 ※必須"]').value ||
@@ -22,7 +22,7 @@ rentButton.addEventListener("click", () => {
     return;
   }
 
-  // 貸出時のみチェックボックスを確認する
+  // 2. 貸出時のチェックボックス確認（厳格にチェックします）
   const checks = document.querySelectorAll('.check input[type="checkbox"]');
   for (let check of checks) {
     if (!check.checked) {
@@ -31,6 +31,11 @@ rentButton.addEventListener("click", () => {
       return;
     }
   }
+
+  // 3. 重複保存防止
+  if (rentButton.dataset.done === "true") return;
+  rentButton.dataset.done = "true";
+  rentButton.disabled = true;
 
   const data = {
     rentalCar: document.getElementById("rentalCar").value,
@@ -64,14 +69,14 @@ rentButton.addEventListener("click", () => {
 // --- 返却ボタンの処理 ---
 returnButton.addEventListener("click", () => {
 
-  // 1. 返却時の必須入力チェック（返却に必要な項目だけを厳選してチェック）
+  // 1. 返却時の必須入力チェック
   const distanceInputs = document.querySelectorAll('input[placeholder="km"]');
   const returnDistanceVal = distanceInputs[1] ? distanceInputs[1].value : "";
 
   if (
     !document.getElementById("rentalCar").value ||
     !document.querySelector('input[placeholder="氏名 ※必須"]').value ||
-    !returnDistanceVal || // 返却時の走行距離(km)
+    !returnDistanceVal || 
     !document.getElementById("staff").value ||
     !document.getElementById("sign").value
   ){
@@ -80,10 +85,7 @@ returnButton.addEventListener("click", () => {
     return; 
   }
 
-  // ★【修正点】返却時はチェックボックスの判定（ループ処理）を完全に削除しました。
-  // これにより、返却時に「確認事項をすべてチェックしてください」のエラーが出ることは絶対にありません。
-
-  // 2. 重複保存防止ガード（すべて入力されている場合のみ即座にロック）
+  // 2. 重複保存防止ガード
   if (returnButton.dataset.done === "true") {
     return;
   }
