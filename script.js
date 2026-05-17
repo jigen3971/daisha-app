@@ -8,11 +8,11 @@ const message = document.getElementById("message");
 // 「代車1 ミライース...」から「代車1」だけを抜き出す機能
 function getShortCarName(fullName) {
   if (!fullName) return "";
-  const match = fullName.match(/^([^\s (［[]+)/);
+  const match = fullName.match(/^([^\s（(]+)/);
   return match ? match[1] : fullName;
 }
 
-// ---- 貸出ボタンの処理 ----
+// --- 貸出ボタンの処理 ---
 rentButton.addEventListener("click", () => {
 
   // 「貸出時走行距離」の入力欄を確実に特定して値を取得
@@ -37,7 +37,7 @@ rentButton.addEventListener("click", () => {
     !telEl || !telEl.value ||
     !customerCarEl || !customerCarEl.value ||
     !customerNumberEl || !customerNumberEl.value ||
-    !rentDistanceVal ||
+    !rentDistanceVal || 
     !staffEl || !staffEl.value ||
     !signEl || !signEl.value
   ){
@@ -96,7 +96,7 @@ rentButton.addEventListener("click", () => {
       message.innerHTML = "貸出情報をスプレッドシートへ保存しました";
       message.style.color = "green";
     }).catch(() => {
-      message.innerHTML = "送信に失敗しました。再度お試しください。";
+      message.innerHTML = "送信に失敗しました。再度お試してください。";
       message.style.color = "red";
       rentButton.dataset.done = "";
       rentButton.disabled = false;
@@ -107,6 +107,13 @@ rentButton.addEventListener("click", () => {
   }
 
   if (file) {
+    // 📸【ここに追加：携帯本体への自動保存処理】
+    const dlLink = document.createElement("a");
+    dlLink.href = URL.createObjectURL(file);
+    dlLink.download = `${nameEl.value}様_預かり車.jpg`;
+    dlLink.click();
+
+    // これ以降は既存の「完全にうまくいっている圧縮＆送信処理」をそのまま実行します
     const img = new Image();
     img.onload = function() {
       const canvas = document.createElement("canvas");
@@ -126,7 +133,7 @@ rentButton.addEventListener("click", () => {
 
 }); // rentButton.addEventListener の閉じ括弧
 
-// ---- 返却ボタンの処理 ----
+// --- 返却ボタンの処理 ---
 returnButton.addEventListener("click", () => {
 
   // 「返却時走行距離」の入力欄を確実に特定して値を取得
@@ -147,18 +154,18 @@ returnButton.addEventListener("click", () => {
   if (
     !rentalCarEl || !rentalCarEl.value ||
     !nameEl || !nameEl.value ||
-    !returnDistanceVal ||
+    !returnDistanceVal || 
     !staffEl || !staffEl.value ||
     !signEl || !signEl.value
   ){
     message.innerHTML = "※ 返却に必要な必須項目（氏名・返却km・スタッフ・サイン等）を入力してください";
     message.style.color = "red";
-    return;
+    return; 
   }
 
   // 返却時確認のチェックボックス（下側の6個）の全チェック検証
   const allChecks = document.querySelectorAll('input[type="checkbox"]');
-  const startIndex = allChecks.length - 6;
+  const startIndex = allChecks.length - 6; 
   for (let i = startIndex; i < allChecks.length; i++) {
     if (allChecks[i] && !allChecks[i].checked) {
       message.innerHTML = "※ 返却時確認の項目（燃料・車内汚れ等）をすべてチェックしてください";
@@ -203,7 +210,7 @@ returnButton.addEventListener("click", () => {
     message.innerHTML = "返却情報をスプレッドシートへ保存しました";
     message.style.color = "green";
   }).catch(() => {
-    message.innerHTML = "送信に失敗しました。再度お試しください。";
+    message.innerHTML = "送信に失敗しました。再度お試してください。";
     message.style.color = "red";
     returnButton.dataset.done = "";
     returnButton.disabled = false;
@@ -211,5 +218,4 @@ returnButton.addEventListener("click", () => {
     returnButton.innerHTML = "返却";
     returnButton.style.backgroundColor = "";
   });
-
 }); // returnButton.addEventListener の閉じ括弧
