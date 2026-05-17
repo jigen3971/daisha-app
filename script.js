@@ -1,4 +1,4 @@
-// ご提示いただいた最新のウェブアプリURLを最初から設定してあります
+// ウェブアプリURL
 const gasUrl = "https://script.google.com/macros/s/AKfycbxAE7CZbHKhe02W2WTQF4NQxtNsL7w8yr6rb2t7ueyLtRoXbiSoYJRDxCZLweaoTrHc/exec";
 
 const rentButton = document.querySelector(".rent-btn");
@@ -15,10 +15,11 @@ function getShortCarName(fullName) {
 // --- 貸出ボタンの処理 ---
 rentButton.addEventListener("click", () => {
 
-  const distanceInputs = document.querySelectorAll('input[placeholder*="km"]');
-  const rentDistanceVal = distanceInputs[0] ? distanceInputs[0].value : "";
+  // 【修正】「貸出時走行距離」の入力欄を確実に特定して値を取得します
+  const rentDistanceInput = document.querySelector('input[placeholder*="貸出時"]');
+  const rentDistanceVal = rentDistanceInput ? rentDistanceInput.value : "";
 
-  // 各種入力項目を柔軟に取得（打ち間違い防止）
+  // 各種入力項目を取得
   const rentalCarEl = document.getElementById("rentalCar") || document.querySelector("select");
   const nameEl = document.querySelector('input[placeholder*="氏名"]');
   const telEl = document.querySelector('input[placeholder*="TEL"]') || document.querySelector('input[placeholder*="電話"]');
@@ -65,7 +66,6 @@ rentButton.addEventListener("click", () => {
   message.innerHTML = "貸出処理中です...";
   message.style.color = "orange";
 
-  // 新しいGASコード（URLSearchParams形式）に完全適合するデータ構造
   const data = {
     rentalCar: getShortCarName(rentalCarEl.value),
     name: nameEl.value,
@@ -76,7 +76,7 @@ rentButton.addEventListener("click", () => {
     reason: reasonEl ? reasonEl.value : "",
     start: document.querySelectorAll('input[type="datetime-local"]')[0] ? document.querySelectorAll('input[type="datetime-local"]')[0].value : "",
     returnDate: document.querySelectorAll('input[type="datetime-local"]')[1] ? document.querySelectorAll('input[type="datetime-local"]')[1].value : "",
-    distance: rentDistanceVal,
+    distance: rentDistanceVal, // ここに確実に入ります
     staff: staffEl.value,
     sign: signEl.value,
     returnDistance: "",
@@ -97,8 +97,9 @@ rentButton.addEventListener("click", () => {
 // --- 返却ボタンの処理 ---
 returnButton.addEventListener("click", () => {
 
-  const distanceInputs = document.querySelectorAll('input[placeholder*="km"]');
-  const returnDistanceVal = distanceInputs.length > 0 ? distanceInputs[distanceInputs.length - 1].value : "";
+  // 【修正】「返却時走行距離」の入力欄を確実に特定して値を取得します
+  const returnDistanceInput = document.querySelector('input[placeholder*="返却時"]');
+  const returnDistanceVal = returnDistanceInput ? returnDistanceInput.value : "";
 
   const rentalCarEl = document.getElementById("rentalCar") || document.querySelector("select");
   const nameEl = document.querySelector('input[placeholder*="氏名"]');
@@ -146,7 +147,7 @@ returnButton.addEventListener("click", () => {
     distance: "",
     staff: staffEl.value,
     sign: signEl.value,
-    returnDistance: returnDistanceVal,
+    returnDistance: returnDistanceVal, // 返却距離
     status: "返却済み",
     rentCheck: "",
     returnCheck: "返却確認完了"
