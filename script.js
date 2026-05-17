@@ -76,20 +76,20 @@ returnButton.addEventListener("click", () => {
   ){
     message.innerHTML = "※ 返却に必要な必須項目（氏名・返却km・スタッフ・サイン等）を入力してください";
     message.style.color = "red";
-    return; // ここで完全に処理をストップさせます
+    return; 
   }
 
-  // 2. 返却時のチェックボックス確認
+  // 2. 返却時のチェックボックス確認（構文エラーを修正）
   const checks = document.querySelectorAll('.check input[type="checkbox"]');
   for (let check of checks) {
     if (!check.checked) {
       message.innerHTML = "※ 確認事項をすべてチェックしてください";
       message.style.color = "red";
-      return; // ここで完全に処理をストップさせます
+      return; // 未チェックのものがある場合のみ、ここで処理を中断します
     }
   }
 
-  // 3. 重複保存防止ガード（すべて正常に入力されている場合のみここに進む）
+  // 3. 重複保存防止ガード（すべて入力・チェック済みの時だけここに進む）
   if (returnButton.dataset.done === "true") {
     return;
   }
