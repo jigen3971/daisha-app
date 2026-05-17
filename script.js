@@ -37,7 +37,7 @@ rentButton.addEventListener("click", () => {
     !telEl || !telEl.value ||
     !customerCarEl || !customerCarEl.value ||
     !customerNumberEl || !customerNumberEl.value ||
-    !rentDistanceVal || 
+    !rentDistanceVal ||
     !staffEl || !staffEl.value ||
     !signEl || !signEl.value
   ){
@@ -48,7 +48,7 @@ rentButton.addEventListener("click", () => {
 
   // 2. 貸出時のチェックボックス確認（上の12個）
   const checks = document.querySelectorAll('.check input[type="checkbox"]');
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++) 
     if (checks[i] && !checks[i].checked) {
       message.innerHTML = "※ 確認事項をすべてチェックしてください";
       message.style.color = "red";
