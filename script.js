@@ -88,8 +88,10 @@ rentButton.addEventListener("click", () => {
 
   function sendRentData(data) {
     fetch(gasUrl, {
-      method: "POST",
-      body: new URLSearchParams(data)
+    method: "POST",
+    body: JSON.stringify(data)
+})
+.then(() => {
     }).then(() => {
       message.innerHTML = "貸出情報をスプレッドシートへ保存しました";
       message.style.color = "green";
@@ -194,7 +196,9 @@ returnButton.addEventListener("click", () => {
 
   fetch(gasUrl, {
     method: "POST",
-    body: new URLSearchParams(data)
+    body: JSON.stringify(data)
+})
+.then(() => {
   }).then(() => {
     message.innerHTML = "返却情報をスプレッドシートへ保存しました";
     message.style.color = "green";
