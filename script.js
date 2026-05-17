@@ -1,5 +1,5 @@
 // ウェブアプリURL
-const gasUrl = "https://script.google.com/macros/s/AKfycbxAE7CZbHKhe02W2WTQF4NQxtNsL7w8yr6rb2t7ueyLtRoXbiSoYJRDxCZLweaoTrHc/exec";
+const gasUrl = "https://script.google.com/macros/s/AKfycbwEx6d3VxIEjQmX95woz3Dw2QUWtUxHQWPi41Mt3F0pWNYMoj8qEOBjv-0FONf58y-l/exec";
 
 const rentButton = document.querySelector(".rent-btn");
 const returnButton = document.querySelector(".return-btn");
