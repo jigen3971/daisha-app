@@ -48,13 +48,13 @@ rentButton.addEventListener("click", () => {
 
   // 2. 貸出時のチェックボックス確認（上の12個）
   const checks = document.querySelectorAll('.check input[type="checkbox"]');
-  for (let i = 0; i < 12; i++) 
+  for (let i = 0; i < 12; i++)
     if (checks[i] && !checks[i].checked) {
       message.innerHTML = "※ 確認事項をすべてチェックしてください";
       message.style.color = "red";
       return;
     }
-  }
+
 
   if (rentButton.dataset.done === "true") return;
 
@@ -86,12 +86,20 @@ rentButton.addEventListener("click", () => {
   };
 
   fetch(gasUrl, {
-    method: "POST",
-    body: new URLSearchParams(data)
-  }).then(() => {
-    message.innerHTML = "貸出情報をスプレッドシートへ保存しました";
-    message.style.color = "green";
-  });
+  method: "POST",
+  body: new URLSearchParams(data)
+}).then(() => {
+  message.innerHTML = "貸出情報をスプレッドシートへ保存しました";
+  message.style.color = "green";
+}).catch(() => {
+  message.innerHTML = "送信に失敗しました。再度お試しください。";
+  message.style.color = "red";
+  rentButton.dataset.done = "";
+  rentButton.disabled = false;
+  rentButton.style.pointerEvents = "";
+  rentButton.innerHTML = "貸出";
+  rentButton.style.backgroundColor = "";
+});
 });
 
 // --- 返却ボタンの処理 ---
@@ -115,19 +123,19 @@ returnButton.addEventListener("click", () => {
   if (
     !rentalCarEl || !rentalCarEl.value ||
     !nameEl || !nameEl.value ||
-    !returnDistanceVal || 
+    !returnDistanceVal ||
     !staffEl || !staffEl.value ||
     !signEl || !signEl.value
   ){
     message.innerHTML = "※ 返却に必要な必須項目（氏名・返却km・スタッフ・サイン等）を入力してください";
     message.style.color = "red";
-    return; 
+    return;
   }
 
   // ★【修正：追加】返却時確認のチェックボックス（下側の6個）の全チェック検証
   const allChecks = document.querySelectorAll('input[type="checkbox"]');
   // 下側の6個（全チェックボックスのうち、後ろから6個分）をループで確認します
-  const startIndex = allChecks.length - 6; 
+  const startIndex = allChecks.length - 6;
   for (let i = startIndex; i < allChecks.length; i++) {
     if (allChecks[i] && !allChecks[i].checked) {
       message.innerHTML = "※ 返却時確認の項目（燃料・車内汚れ等）をすべてチェックしてください";
@@ -166,10 +174,18 @@ returnButton.addEventListener("click", () => {
   };
 
   fetch(gasUrl, {
-    method: "POST",
-    body: new URLSearchParams(data)
-  }).then(() => {
-    message.innerHTML = "返却情報をスプレッドシートへ保存しました";
-    message.style.color = "green";
-  });
+  method: "POST",
+  body: new URLSearchParams(data)
+}).then(() => {
+  message.innerHTML = "返却情報をスプレッドシートへ保存しました";
+  message.style.color = "green";
+}).catch(() => {
+  message.innerHTML = "送信に失敗しました。再度お試しください。";
+  message.style.color = "red";
+  returnButton.dataset.done = "";
+  returnButton.disabled = false;
+  returnButton.style.pointerEvents = "";
+  returnButton.innerHTML = "返却";
+  returnButton.style.backgroundColor = "";
+});
 });
