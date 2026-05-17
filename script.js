@@ -1,5 +1,5 @@
 // ウェブアプリURL
-const gasUrl = "https://script.google.com/macros/s/AKfycbwEx6d3VxIEjQmX95woz3Dw2QUWtUxHQWPi41Mt3F0pWNYMoj8qEOBjv-0FONf58y-l/exec";
+const gasUrl = "https://script.google.com/macros/s/AKfycby7vO3XSWXrYTnyU8oLYLf9QmvD27QEngYUSerDo9B6BJaogEZld4wVzIRSeIw_LtL1/exec";
 
 const rentButton = document.querySelector(".rent-btn");
 const returnButton = document.querySelector(".return-btn");
@@ -92,6 +92,9 @@ rentButton.addEventListener("click", () => {
     body: JSON.stringify(data)
 })
 .then(() => {
+  message.innerHTML = "貸出情報をスプレッドシートへ保存しました";
+        message.style.color = "green";
+
     }).then(() => {
       message.innerHTML = "貸出情報をスプレッドシートへ保存しました";
       message.style.color = "green";
@@ -199,6 +202,9 @@ returnButton.addEventListener("click", () => {
     body: JSON.stringify(data)
 })
 .then(() => {
+  message.innerHTML = "返却情報をスプレッドシートへ保存しました";
+        message.style.color = "green";
+
   }).then(() => {
     message.innerHTML = "返却情報をスプレッドシートへ保存しました";
     message.style.color = "green";
