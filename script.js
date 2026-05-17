@@ -18,7 +18,7 @@ rentButton.addEventListener("click", () => {
     !document.querySelector('input[placeholder="TEL ※必須"]').value ||
     !document.querySelector('input[placeholder="預かり車 車種 ※必須"]').value ||
     !document.querySelector('input[placeholder="預かり車 ナンバー ※必須"]').value ||
-    !rentDistanceVal || // 貸出時のkmが空ならストップ
+    !rentDistanceVal || 
     !document.getElementById("staff").value ||
     !document.getElementById("sign").value
   ){
@@ -37,12 +37,12 @@ rentButton.addEventListener("click", () => {
     }
   }
 
-  // 3. 【復活】重複保存防止ガード（すべて正常な時だけ即座にロック）
+  // 3. 重複保存防止ガード
   if (rentButton.dataset.done === "true") {
     return;
   }
 
-  // 貸出ボタンを即座にグレーアウト（無効化）
+  // 貸出ボタンを即座にグレーアウト
   rentButton.dataset.done = "true";
   rentButton.disabled = true;
   rentButton.style.pointerEvents = "none";
@@ -52,23 +52,28 @@ rentButton.addEventListener("click", () => {
   message.innerHTML = "貸出処理中です。もう一度押さないでください。";
   message.style.color = "orange";
 
+  // ★スプレッドシートの並び順と完全に一致させつつ、「reason（預かり理由）」を追加しました
   const data = {
-    rentalCar: document.getElementById("rentalCar").value,
-    name: document.querySelector('input[placeholder="氏名 ※必須"]').value,
-    tel: document.querySelector('input[placeholder="TEL ※必須"]').value,
-    address: document.querySelector('input[placeholder="住所"]').value,
-    customerCar: document.querySelector('input[placeholder="預かり車 車種 ※必須"]').value,
-    customerNumber: document.querySelector('input[placeholder="預かり車 ナンバー ※必須"]').value,
-    reason: document.getElementById("reason").value,
-    start: document.querySelectorAll('input[type="datetime-local"]')[0].value,
-    returnDate: document.querySelectorAll('input[type="datetime-local"]')[1].value,
-    distance: rentDistanceVal, // 貸出時のkm
-    staff: document.getElementById("staff").value,
-    sign: document.getElementById("sign").value,
-    returnDistance: "",
-    status: "使用中",
-    rentCheck: "貸出確認完了",
-    returnCheck: ""
+    timestamp: "", // A: 日時
+    rentalCar: document.getElementById("rentalCar").value, // B: 貸出代車
+    name: document.querySelector('input[placeholder="氏名 ※必須"]').value, // C: 氏名
+    tel: document.querySelector('input[placeholder="TEL ※必須"]').value, // D: TEL
+    address: document.querySelector('input[placeholder="住所"]').value, // E: 住所
+    customerCar: document.querySelector('input[placeholder="預かり車 車種 ※必須"]').value, // F: 預かり車
+    customerNumber: document.querySelector('input[placeholder="預かり車 ナンバー ※必須"]').value, // G: 預かり車ナンバー
+    
+    // 【修正：追加した行】
+    reason: document.getElementById("reason").value, // H: 預かり理由（車検・板金など）
+    
+    start: document.querySelectorAll('input[type="datetime-local"]')[0].value, // I: 貸出日時
+    returnDate: document.querySelectorAll('input[type="datetime-local"]')[1].value, // J: 返却予定
+    distance: rentDistanceVal, // K: 貸出距離
+    staff: document.getElementById("staff").value, // L: 担当者
+    sign: document.getElementById("sign").value, // M: 署名
+    returnDistance: "", // N: 返却距離
+    status: "使用中", // O: 状態
+    rentCheck: "貸出確認完了", // P: 貸出確認
+    returnCheck: "" // Q: 返却確認
   };
 
   fetch(gasUrl, {
@@ -92,7 +97,7 @@ returnButton.addEventListener("click", () => {
   if (
     !document.getElementById("rentalCar").value ||
     !document.querySelector('input[placeholder="氏名 ※必須"]').value ||
-    !returnDistanceVal || // 返却時のkmが空ならストップ
+    !returnDistanceVal || 
     !document.getElementById("staff").value ||
     !document.getElementById("sign").value
   ){
@@ -101,12 +106,12 @@ returnButton.addEventListener("click", () => {
     return; 
   }
 
-  // 2. 重複保存防止ガード（すべて正常な時だけ即座にロック）
+  // 2. 重複保存防止ガード
   if (returnButton.dataset.done === "true") {
     return;
   }
 
-  // 返却ボタンを即座にグレーアウト（無効化）
+  // 返却ボタンを即座にグレーアウト
   returnButton.dataset.done = "true";
   returnButton.disabled = true;
   returnButton.style.pointerEvents = "none";
@@ -118,22 +123,23 @@ returnButton.addEventListener("click", () => {
   message.style.color = "orange";
 
   const data = {
-    rentalCar: document.getElementById("rentalCar").value,
-    name: document.querySelector('input[placeholder="氏名 ※必須"]').value,
-    tel: document.querySelector('input[placeholder="TEL ※必須"]').value,
-    address: document.querySelector('input[placeholder="住所"]').value,
-    customerCar: document.querySelector('input[placeholder="預かり車 車種 ※必須"]').value,
-    customerNumber: document.querySelector('input[placeholder="預かり車 ナンバー ※必須"]').value,
-    reason: document.getElementById("reason").value,
-    start: "",
-    returnDate: "",
-    distance: "",
-    staff: document.getElementById("staff").value,
-    sign: document.getElementById("sign").value,
-    returnDistance: returnDistanceVal, // 返却時のkm
-    status: "返却済み",
-    rentCheck: "",
-    returnCheck: "返却確認完了"
+    timestamp: "", // A: 日時
+    rentalCar: document.getElementById("rentalCar").value, // B: 貸出代車
+    name: document.querySelector('input[placeholder="氏名 ※必須"]').value, // C: 氏名
+    tel: document.querySelector('input[placeholder="TEL ※必須"]').value, // D: TEL
+    address: document.querySelector('input[placeholder="住所"]').value, // E: 住所
+    customerCar: document.querySelector('input[placeholder="預かり車 車種 ※必須"]').value, // F: 預かり車
+    customerNumber: document.querySelector('input[placeholder="預かり車 ナンバー ※必須"]').value, // G: 預かり車ナンバー
+    reason: document.getElementById("reason").value, // H: 預かり理由
+    start: "", // I: 貸出日時
+    returnDate: "", // J: 返却予定
+    distance: "", // K: 貸出距離
+    staff: document.getElementById("staff").value, // L: 担当者
+    sign: document.getElementById("sign").value, // M: 署名
+    returnDistance: returnDistanceVal, // N: 返却距離
+    status: "返却済み", // O: 状態
+    rentCheck: "", // P: 貸出確認
+    returnCheck: "返却確認完了" // Q: 返却確認
   };
 
   fetch(gasUrl, {
