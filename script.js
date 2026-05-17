@@ -115,7 +115,7 @@ function sendRentData(data) {
     rentButton.innerHTML = "貸出";
     rentButton.style.backgroundColor = "";
   });
-}
+});
 
 // --- 返却ボタンの処理 ---
 returnButton.addEventListener("click", () => {
