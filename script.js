@@ -4,6 +4,52 @@ const gasUrl = "https://script.google.com/macros/s/AKfycbxZO8Ht4cfMyCTrx-fqaB8t0
 const rentButton = document.querySelector(".rent-btn");
 const returnButton = document.querySelector(".return-btn");
 const message = document.getElementById("message");
+// 使用中代車を管理
+function setCarBusy(carName) {
+  localStorage.setItem("busy_" + carName, "true");
+  updateCarOptions();
+}
+
+// 返却で空きに戻す
+function setCarAvailable(carName) {
+  localStorage.removeItem("busy_" + carName);
+  updateCarOptions();
+}
+
+// 代車状態更新
+function updateCarOptions() {
+
+  const rentalCarEl = document.getElementById("rentalCar");
+
+  if (!rentalCarEl) return;
+
+  [...rentalCarEl.options].forEach(option => {
+
+    const carName = getShortCarName(option.value);
+
+    if (localStorage.getItem("busy_" + carName) === "true") {
+
+      option.disabled = true;
+      option.classList.add("car-busy");
+
+      if (!option.textContent.includes("【貸出中】")) {
+        option.textContent += "【貸出中】";
+      }
+
+    } else {
+
+      option.disabled = false;
+      option.classList.remove("car-busy");
+      option.textContent =
+        option.textContent.replace("【貸出中】", "");
+
+    }
+
+  });
+
+}
+
+window.addEventListener("load", updateCarOptions);
 
 // 「代車1 ミライース...」から「代車1」だけを抜き出す機能
 function getShortCarName(fullName) {
@@ -94,6 +140,7 @@ rentButton.addEventListener("click", () => {
 .then(() => {
   message.innerHTML = "貸出情報をスプレッドシートへ保存しました";
         message.style.color = "green";
+        setCarBusy(getShortCarName(rentalCarEl.value));
 
     }).then(() => {
       message.innerHTML = "貸出情報をスプレッドシートへ保存しました";
@@ -204,6 +251,7 @@ returnButton.addEventListener("click", () => {
 .then(() => {
   message.innerHTML = "返却情報をスプレッドシートへ保存しました";
         message.style.color = "green";
+        setCarAvailable(getShortCarName(rentalCarEl.value));
 
   }).then(() => {
     message.innerHTML = "返却情報をスプレッドシートへ保存しました";

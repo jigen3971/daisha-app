@@ -148,3 +148,12 @@ hr {
   /* 透明なメッセージ枠をすり抜けて、後ろのチェックボックスを押せるようにする設定 */
   pointer-events: none;
 }
+.note {
+  font-size: 12px;
+  color: #666;
+  margin-top: 6px;
+}
+option.car-busy {
+  background: #ccc;
+  color: #666;
+}できました
